@@ -1,41 +1,43 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const TargetHeartRateApp());
+  runApp(const HeartRatesCalculatorApp());
 }
 
-class TargetHeartRateApp extends StatelessWidget {
-  const TargetHeartRateApp({super.key});
+class HeartRatesCalculatorApp extends StatelessWidget {
+  const HeartRatesCalculatorApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Target Heart Rate Calculator',
+      title: 'Heart Rates Calculator',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const TargetHeartRateScreen(),
+      home: const HeartRatesCalculator(),
     );
   }
 }
 
-class TargetHeartRateScreen extends StatefulWidget {
-  const TargetHeartRateScreen({super.key});
+class HeartRatesCalculator extends StatefulWidget {
+  const HeartRatesCalculator({Key? key}) : super(key: key);
 
   @override
-  _TargetHeartRateScreenState createState() => _TargetHeartRateScreenState();
+  _HeartRatesCalculatorState createState() => _HeartRatesCalculatorState();
 }
 
-class _TargetHeartRateScreenState extends State<TargetHeartRateScreen> {
+class _HeartRatesCalculatorState extends State<HeartRatesCalculator> {
   TextEditingController ageController = TextEditingController();
   String maxHeartRate = '';
   String targetHeartRateRange = '';
 
   void calculateHeartRates() {
-    int age = int.tryParse(ageController.text) ?? 0;
-    int maxHeartRate = 220 - age;
-    int minTargetHeartRate = (maxHeartRate * 0.5).toInt();
-    int maxTargetHeartRate = (maxHeartRate * 0.85).toInt();
+    double age = double.tryParse(ageController.text) ?? 0;
+    int maxHeartRate = (220 - age).toInt();
+    int minTargetHeartRate = maxHeartRate ~/ 2; // Integer division
+    int maxTargetHeartRate = ((maxHeartRate * 0.85).toInt()).ceil();
 
     setState(() {
       this.maxHeartRate = maxHeartRate.toString();
@@ -47,7 +49,7 @@ class _TargetHeartRateScreenState extends State<TargetHeartRateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Target Heart Rate Calculator'),
+        title: const Text('Heart Rates Calculator'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
